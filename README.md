@@ -99,31 +99,5 @@ Thinking beyond scheduled ETL toward self-maintaining data systems
 Building analytics-friendly data models for downstream consumption
 
 
-## 5. Commit the changes
-Scroll down and click:
 
-- **Commit changes**
-- Add a message like:
-  `Added project README and architecture diagram`
 
-Then confirm the commit.
-
-## 6. Add folders to make the repo look professional
-Back in the repository, create these folders one by one:
-
-- `sql/`
-- `docs/`
-- `images/`
-
-GitHub does not let you create an empty folder directly, so for each one:
-
-- Click **Add file** → **Create new file**
-- In the filename box, type:
-  - `sql/README.md`
-  - `docs/README.md`
-  - `images/README.md`
-
-Then add small placeholder text like:
-
-```md
-Files for this folder will be added here.
