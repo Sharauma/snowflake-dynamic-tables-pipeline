@@ -1,103 +1,58 @@
-# snowflake-dynamic-tables-pipeline
-Production-style automated data pipeline in Snowflake using Dynamic Tables for analytics-ready outputs.
+Declarative Pipelines with Snowflake Dynamic Tables
+This lab demonstrates building a declarative data pipeline using Snowflake Dynamic Tables with incremental refresh capabilities, monitoring, and querying via Snowflake Intelligence.
 
-## Overview
-This project demonstrates how to build an automated data pipeline in Snowflake using **Dynamic Tables**. The pipeline is designed to ingest raw data, apply transformations, and serve analytics-ready datasets with minimal orchestration overhead.
+Prerequisites
+Snowflake account with ACCOUNTADMIN access
+Ability to create databases, warehouses, and roles
+Basic SQL knowledge
+How to run this repo
+The easiest way to build the data pipeline in this repo is to connect this repo to Snowflake via a Snowflake Workspace. 
 
-The main goal was to explore how Snowflake Dynamic Tables can simplify modern data engineering workflows by replacing manually scheduled refresh logic with dependency-driven, self-updating pipelines.
+Important: When prompted to select an authentication method, select Public repository.
 
-## Objectives
-- Build a multi-stage data pipeline in Snowflake
-- Transform raw data into cleaned and analytics-ready layers
-- Automate downstream updates using Dynamic Tables
-- Reduce manual scheduling and ETL maintenance effort
-- Support near-real-time analytics use cases
+Files
+00_load_tasty_bytes.sql
 
-## Key Features
-- **Raw to curated pipeline design** with multiple transformation stages
-- **Dynamic Tables** for automated refresh and dependency management
-- **Incremental data processing** for improved efficiency
-- **Analytics-ready outputs** for dashboards, reporting, and downstream ML use cases
-- **Scalable pipeline structure** aligned with production data workflows
+Creates lab role, database (tasty_bytes_db), schemas (raw, analytics), and warehouse (tasty_bytes_wh)
+Defines raw table structures for order_header, order_detail, and menu
+Sets up external stage and file format for CSV data ingestion
+Loads approximately 1B+ records from public S3 bucket
+01_dynamic_tables.sql
 
-## Architecture Diagram
+Creates 3-tier declarative pipeline using Dynamic Tables
+Tier 1: Enriches raw data with temporal dimensions, financial calculations, and discount flags
+Tier 2: Joins enriched orders and line items into comprehensive fact table
+Tier 3: Pre-aggregates daily business metrics and product performance metrics
+Uses DOWNSTREAM lag on Tier 1 and Tier 2, with a 1-hour TARGET_LAG on Tier 3 to drive the refresh schedule
+Demonstrates automatic dependency graph management
+02_sproc.sql
 
-```text
-                 +----------------------+
-                 |   Source / Raw Data  |
-                 |  Files, Streams, DB  |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 |   Raw Ingestion Layer |
-                 |   Snowflake Raw Tbls  |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 | Transformation Layer |
-                 | Clean / Join / Enrich|
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 |   Dynamic Tables     |
-                 | Auto-refresh based   |
-                 | on dependencies      |
-                 +----------+-----------+
-                            |
-                            v
-                 +----------------------+
-                 | Analytics-ready Data |
-                 | KPIs / Reports / ML  |
-                 +----------+-----------+
-                            |
-            +---------------+----------------+
-            |                                |
-            v                                v
- +---------------------+         +----------------------+
- | BI Dashboards       |         | Advanced Analytics   |
- | Tableau / Power BI  |         | Forecasting / ML     |
- +---------------------+         +----------------------+
+Creates stored procedure generate_demo_orders(num_rows) to simulate new order arrivals
+Generates synthetic order headers and corresponding order details with referential integrity
+Used to demonstrate incremental refresh capabilities
+03_incremental_refresh.sql
 
+Demonstrates incremental vs full refresh behavior
+Inserts 500 new orders using stored procedure
+Manually triggers refresh on all dynamic tables across three tiers
+Queries INFORMATION_SCHEMA.DYNAMIC_TABLE_REFRESH_HISTORY to show INCREMENTAL vs FULL refresh actions
+Validates new data propagation through entire pipeline
+04_monitoring.sql
 
-## Business Value
+Queries dynamic table metadata and refresh history
+Shows refresh type (INCREMENTAL vs FULL), duration, and current state
+05_cleanup.sql
 
-This approach demonstrates how modern cloud data platforms can reduce operational complexity in ETL pipelines. Instead of relying on external schedulers or chained batch jobs, Dynamic Tables enable a more declarative and maintainable pipeline design.
+Drops all lab resources: tasty_bytes_db database and tasty_bytes_wh warehouse
+Optional role cleanup (requires ACCOUNTADMIN)
+Resets environment to clean state
+agent_questions.md
 
-Potential applications include:
+Sample questions to ask your Snowflake Intelligence agent
+Python Scripts
+streamlit.py
 
-Real-time KPI dashboards
-
-Operational reporting
-
-Anomaly detection pipelines
-
-Forecasting systems using continuously refreshed data
-
-## Tech Stack
-
-Snowflake
-
-Snowflake Dynamic Tables
-
-SQL
-
-Cloud-native data pipeline concepts
-
-## Learning Outcomes
-
-Through this project, I gained hands-on experience in:
-
-Designing layered data pipelines in Snowflake
-
-Automating table dependencies with Dynamic Tables
-
-Thinking beyond scheduled ETL toward self-maintaining data systems
-
-Building analytics-friendly data models for downstream consumption
-
-
-
-
+Streamlit dashboard visualizing Tasty Bytes analytics
+Displays top 10 products by revenue with Altair bar chart colored by profit margin
+Shows current day key metrics: orders, revenue, profit, margin, customers, items sold
+Uses Snowpark for data access from dynamic tables
