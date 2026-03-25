@@ -52,7 +52,6 @@ Architecture diagram
 
 
 
-
 Files
 00_load_tasty_bytes.sql
 
