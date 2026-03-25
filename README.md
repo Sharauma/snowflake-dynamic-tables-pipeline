@@ -59,6 +59,7 @@ Creates lab role, database (tasty_bytes_db), schemas (raw, analytics), and wareh
 Defines raw table structures for order_header, order_detail, and menu
 Sets up external stage and file format for CSV data ingestion
 Loads approximately 1B+ records from public S3 bucket
+
 01_dynamic_tables.sql
 
 Creates 3-tier declarative pipeline using Dynamic Tables
@@ -67,11 +68,13 @@ Tier 2: Joins enriched orders and line items into comprehensive fact table
 Tier 3: Pre-aggregates daily business metrics and product performance metrics
 Uses DOWNSTREAM lag on Tier 1 and Tier 2, with a 1-hour TARGET_LAG on Tier 3 to drive the refresh schedule
 Demonstrates automatic dependency graph management
+
 02_sproc.sql
 
 Creates stored procedure generate_demo_orders(num_rows) to simulate new order arrivals
 Generates synthetic order headers and corresponding order details with referential integrity
 Used to demonstrate incremental refresh capabilities
+
 03_incremental_refresh.sql
 
 Demonstrates incremental vs full refresh behavior
@@ -79,18 +82,22 @@ Inserts 500 new orders using stored procedure
 Manually triggers refresh on all dynamic tables across three tiers
 Queries INFORMATION_SCHEMA.DYNAMIC_TABLE_REFRESH_HISTORY to show INCREMENTAL vs FULL refresh actions
 Validates new data propagation through entire pipeline
+
 04_monitoring.sql
 
 Queries dynamic table metadata and refresh history
 Shows refresh type (INCREMENTAL vs FULL), duration, and current state
+
 05_cleanup.sql
 
 Drops all lab resources: tasty_bytes_db database and tasty_bytes_wh warehouse
 Optional role cleanup (requires ACCOUNTADMIN)
 Resets environment to clean state
+
 agent_questions.md
 
 Sample questions to ask your Snowflake Intelligence agent
+
 Python Scripts
 streamlit.py
 
