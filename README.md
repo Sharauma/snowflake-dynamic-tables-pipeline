@@ -10,6 +10,46 @@ The easiest way to build the data pipeline in this repo is to connect this repo 
 
 Important: When prompted to select an authentication method, select Public repository.
 
+Architecture diagram
+
+                 +----------------------+
+                 |   Source / Raw Data  |
+                 |  Files, Streams, DB  |
+                 +----------+-----------+
+                            |
+                            v
+                 +----------------------+
+                 |   Raw Ingestion Layer |
+                 |   Snowflake Raw Tbls  |
+                 +----------+-----------+
+                            |
+                            v
+                 +----------------------+
+                 | Transformation Layer |
+                 | Clean / Join / Enrich|
+                 +----------+-----------+
+                            |
+                            v
+                 +----------------------+
+                 |   Dynamic Tables     |
+                 | Auto-refresh based   |
+                 | on dependencies      |
+                 +----------+-----------+
+                            |
+                            v
+                 +----------------------+
+                 | Analytics-ready Data |
+                 | KPIs / Reports / ML  |
+                 +----------+-----------+
+                            |
+            +---------------+----------------+
+            |                                |
+            v                                v
+ +---------------------+         +----------------------+
+ | BI Dashboards       |         | Advanced Analytics   |
+ | Tableau / Power BI  |         | Forecasting / ML     |
+ +---------------------+         +----------------------+
+
 Files
 00_load_tasty_bytes.sql
 
