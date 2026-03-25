@@ -62,7 +62,7 @@ The main goal was to explore how Snowflake Dynamic Tables can simplify modern da
  +---------------------+         +----------------------+
 
 
- Business Value
+## Business Value
 
 This approach demonstrates how modern cloud data platforms can reduce operational complexity in ETL pipelines. Instead of relying on external schedulers or chained batch jobs, Dynamic Tables enable a more declarative and maintainable pipeline design.
 
@@ -76,7 +76,7 @@ Anomaly detection pipelines
 
 Forecasting systems using continuously refreshed data
 
-Tech Stack
+## Tech Stack
 
 Snowflake
 
@@ -86,7 +86,7 @@ SQL
 
 Cloud-native data pipeline concepts
 
-Learning Outcomes
+## Learning Outcomes
 
 Through this project, I gained hands-on experience in:
 
